@@ -124,5 +124,8 @@
       }
     }
   },
-  "defaultProject": "ng-covid-tracker"
+  "defaultProject": "ng-covid-tracker",
+  "cli": {
+    "analytics": false
+  }
 }
