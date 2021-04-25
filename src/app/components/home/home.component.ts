@@ -16,32 +16,44 @@ export class HomeComponent implements OnInit {
   totalActive: number = 0;
   totalDeaths: number = 0;
   totalRecovered: number = 0;
-  
-  
+
+
   pieChart: GoogleChartInterface = {
+    chartType: 'PieChart'
+  };
+  pieChartWorld: GoogleChartInterface = {
     chartType: 'PieChart'
   };
   columnChart: GoogleChartInterface = {
     chartType: 'ColumnChart'
   };
+
+  columnChartWorld: GoogleChartInterface = {
+    chartType: 'ColumnChart'
+  };
   globalData: GlobalDataSummary[] = [];
   constructor(private dataService: DataServiceService) { }
 
-  
+
 
 
   initChart() {
-  
+
     let datatable = [];
+    let datatableWorld = [];
     datatable.push(["Country", "Cases"]);
+    datatableWorld.push(["Country", "Cases"]);
 
     this.globalData.forEach(cs => {
 
-      if (cs.confirmed! > 1000000) {
+      if (cs.confirmed! > 10000000) {
         datatable.push([
           cs.country, cs.confirmed
-        ])
+        ]);
       }
+      datatableWorld.push([
+        cs.country, cs.confirmed
+      ]);
     })
 
     this.pieChart = {
@@ -57,9 +69,37 @@ export class HomeComponent implements OnInit {
         height: 500
       },
     };
+    this.pieChartWorld = {
+      chartType: 'PieChart',
+      dataTable: datatableWorld,
+      //firstRowIsData: true,
+      options: {
+        animation:{
+          duration: 1000,
+          easing: 'out',
+        },
+        'Country': 'Cases',
+        height: 500,
+      },
+    };
+
     this.columnChart = {
       chartType: 'ColumnChart',
       dataTable: datatable,
+      //firstRowIsData: true,
+      options: {
+        animation:{
+          duration: 1000,
+          easing: 'out',
+        },
+        'Country': 'Cases',
+        height: 500
+      },
+    };
+
+    this.columnChartWorld = {
+      chartType: 'ColumnChart',
+      dataTable: datatableWorld,
       //firstRowIsData: true,
       options: {
         animation:{
@@ -99,34 +139,34 @@ export class HomeComponent implements OnInit {
   }
 
   updateChart(caseType: string) {
-    
+
     let datatable = [];
-    
-    
+
+
       datatable.push(["Country", "Cases"]);
-      
+
       this.globalData.forEach(cs => {
         let value: number =0;
       if(caseType === 'c')
         if (cs.confirmed! > 10000) {
-          
-          value = cs.confirmed!;          
+
+          value = cs.confirmed!;
           console.log(value)
         }
 
       if(caseType === 'a')
         if (cs.active! > 20000) {
-          value = cs.active!;          
+          value = cs.active!;
         }
 
       if(caseType === 'r')
         if (cs.recovered! > 100000) {
-          value = cs.recovered!;          
+          value = cs.recovered!;
         }
 
       if(caseType === 'd')
         if (cs.recovered! > 50000) {
-          value = cs.recovered!;          
+          value = cs.recovered!;
         }
 
         datatable.push([
@@ -134,7 +174,7 @@ export class HomeComponent implements OnInit {
         ]);
       })
 
-      
+
     this.pieChart = {
       chartType: 'PieChart',
       dataTable: datatable,
